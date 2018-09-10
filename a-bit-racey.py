@@ -8,6 +8,7 @@ version history
 ===============
 v.0.1.0 - Initial game skeleton that displays the events that appear in event loop of the game
 v.0.2.0 - Adding a car to the display.
+v.0.3.0 - Allow car to move left or right on the screen.
 """
 
 # display configuration
@@ -19,7 +20,10 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
 
+# car variables
 car_image = pygame.image.load('assets/car.jpg')
+x_change = 0
+car_speed = 0
 
 # (0, 0) is top-left corner
 def car(x, y):
@@ -37,6 +41,17 @@ while not crashed:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             crashed = True
+        # key movements
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                x_change = -5
+            elif event.key == pygame.K_RIGHT:
+                x_change = 5
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                x_change = 0
+
+        x += x_change
         # print(event)
     game_display.fill(white)
     car(x, y)
