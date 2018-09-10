@@ -9,7 +9,7 @@ version history
 v.0.1.0 - Initial game skeleton that displays the events that appear in event loop of the game
 v.0.2.0 - Adding a car to the display.
 v.0.3.0 - Allow car to move left or right on the screen.
-v.0.4.0 - Create game boundaries.
+v.0.4.0 - Allow car to crash at boundaries.
 """
 
 # display configuration
@@ -33,7 +33,6 @@ pygame.init()
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('A Bit Racey')
 clock = pygame.time.Clock()
-
 
 def game_loop():
     x = (display_width * 0.45)
