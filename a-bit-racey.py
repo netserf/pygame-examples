@@ -24,8 +24,8 @@ white = (255, 255, 255)
 red = (255, 0, 0)
 
 # car variables
-car_image = pygame.image.load('assets/car.jpg')
-car_width = 210
+car_image = pygame.image.load('car.png')
+car_width = 400
 
 pygame.init()
 game_display = pygame.display.set_mode((display_width, display_height))
@@ -43,7 +43,7 @@ def text_objects(text, font):
 def message_display(text):
     large_text = pygame.font.Font('freesansbold.ttf', 115)
     text_surf, text_rect = text_objects(text, large_text)
-    text_rect.center = ((display_width / 2), (display_height / 2))
+    text_rect.center = ((display_width / 2), (display_height / 4))
     game_display.blit(text_surf, text_rect)
     pygame.display.update()
     time.sleep(2)    # show message for a short 2 sec period
@@ -53,8 +53,8 @@ def crash():
     message_display('You Crashed')
 
 def game_loop():
-    x = (display_width * 0.45)
-    y = (display_height * 0.6)
+    x = (display_width * 0.25)
+    y = (display_height * 0.5)
 
     x_change = 0
     game_exit = False
