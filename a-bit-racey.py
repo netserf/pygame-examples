@@ -1,5 +1,7 @@
 import pygame
 import time
+import random
+
 """
 A Bit Racey Game
 - This code follows the tutorial from sentdex:
@@ -12,6 +14,7 @@ v.0.2.0 - Adding a car to the display.
 v.0.3.0 - Allow car to move left or right on the screen.
 v.0.4.0 - Allow car to crash at boundaries.
 v.0.5.0 - Allow the user to restart the game after a crash.
+v.0.6.0 - Add raining block functionality.
 """
 
 # display configuration
@@ -49,6 +52,10 @@ def message_display(text):
     time.sleep(2)    # show message for a short 2 sec period
     game_loop()   # restart the game after message
 
+def things(thingx, thingy, thingw, thingh, color):
+    # draw box to screen
+    pygame.draw.rect(game_display, color, [thingx, thingy, thingw, thingh])
+
 def crash():
     message_display('You Crashed')
 
@@ -58,6 +65,12 @@ def game_loop():
 
     x_change = 0
     game_exit = False
+
+    thing_startx = random.randrange(0, display_width)
+    thing_starty = -600   # start -600 pixels off screen
+    thing_speed = 7
+    thing_width = 100  # pixels
+    thing_height= 100  # pixels
 
     while not game_exit:
         for event in pygame.event.get():
@@ -75,9 +88,14 @@ def game_loop():
                     x_change = 0
         x += x_change
         game_display.fill(white)
+        things(thing_startx, thing_starty, thing_width, thing_height, black)
+        thing_starty += thing_speed
         car(x, y)
         if x > display_width - car_width or x < 0:
             crash()
+        if thing_starty > display_height:  # block off the screen
+            thing_starty = 0 - thing_height
+            thing_startx = random.randrange(0, display_width)
         pygame.display.update()
         clock.tick(60)
 
