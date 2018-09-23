@@ -15,6 +15,7 @@ v.0.3.0 - Allow car to move left or right on the screen.
 v.0.4.0 - Allow car to crash at boundaries.
 v.0.5.0 - Allow the user to restart the game after a crash.
 v.0.6.0 - Add raining block functionality.
+v.0.7.0 - Crashing.
 """
 
 # display configuration
@@ -96,6 +97,12 @@ def game_loop():
         if thing_starty > display_height:  # block off the screen
             thing_starty = 0 - thing_height
             thing_startx = random.randrange(0, display_width)
+        if y < thing_starty + thing_height:
+            print('Y crossover')
+            if x > thing_startx and x < thing_startx + thing_width \
+                    or x + car_width > thing_startx and x + car_width < thing_startx + thing_width:
+                print('X crossover ... CRASH')
+                crash()
         pygame.display.update()
         clock.tick(60)
 
