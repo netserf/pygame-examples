@@ -16,6 +16,7 @@ v.0.4.0 - Allow car to crash at boundaries.
 v.0.5.0 - Allow the user to restart the game after a crash.
 v.0.6.0 - Add raining block functionality.
 v.0.7.0 - Crashing.
+v.0.8.0 - Scoring.
 """
 
 # display configuration
@@ -29,12 +30,21 @@ red = (255, 0, 0)
 
 # car variables
 car_image = pygame.image.load('car.png')
-car_width = 400
+car_width = 65
+
+# block variables
+block_color = (53,115,255)
+
 
 pygame.init()
 game_display = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('A Bit Racey')
 clock = pygame.time.Clock()
+
+def things_dodged(count):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render("Dodged: " + str(count), True, black)
+    game_display.blit(text, (0,0))
 
 # (0, 0) is top-left corner
 def car(x, y):
@@ -61,17 +71,18 @@ def crash():
     message_display('You Crashed')
 
 def game_loop():
-    x = (display_width * 0.25)
-    y = (display_height * 0.5)
+    x = (display_width * 0.45)
+    y = (display_height * 0.8)
 
     x_change = 0
     game_exit = False
 
     thing_startx = random.randrange(0, display_width)
     thing_starty = -600   # start -600 pixels off screen
-    thing_speed = 7
+    thing_speed = 5
     thing_width = 100  # pixels
     thing_height= 100  # pixels
+    dodged = 0
 
     while not game_exit:
         for event in pygame.event.get():
@@ -89,14 +100,18 @@ def game_loop():
                     x_change = 0
         x += x_change
         game_display.fill(white)
-        things(thing_startx, thing_starty, thing_width, thing_height, black)
+        things(thing_startx, thing_starty, thing_width, thing_height, block_color)
         thing_starty += thing_speed
         car(x, y)
+        things_dodged(dodged)
         if x > display_width - car_width or x < 0:
             crash()
         if thing_starty > display_height:  # block off the screen
             thing_starty = 0 - thing_height
             thing_startx = random.randrange(0, display_width)
+            dodged += 1
+            thing_speed += 1
+            thing_width += (dodged * 1.1)
         if y < thing_starty + thing_height:
             print('Y crossover')
             if x > thing_startx and x < thing_startx + thing_width \
